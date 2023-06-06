@@ -1,0 +1,74 @@
+---
+title: "Day2_20230606"
+author: "Eva"
+date: "06.06.2023"
+format:
+  html:
+    toc: true
+    code-fold: show
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+
+---
+
+```{r}
+#| output: false
+#load libraries
+library(devtools)
+library(tidyverse)
+library(here)
+library(lubridate)
+library(unibeCols)
+library(ggplot2)
+
+```
+
+## Create something, this is the title
+
+The aim of this project is to create a Quarto file that works.
+
+## Data
+
+Ebola data from 3 countries
+```{r}
+ebola_data <- read_csv(here("data", "raw", "ebola.csv"))
+
+```
+
+## Results
+This part shows results produced with the ebola-data. 
+
+```{r}
+
+ebola_plot <- ebola_data %>% select(Country, Date, Cum_conf_cases) %>%
+  filter(Country == c("Sierra Leone", "Guinea", "Senegal" )) %>%
+  filter(Date <= "2015-05-31")
+
+  
+  
+  ggplot(data = ebola_plot, 
+                  mapping = aes(x = Date, y = Cum_conf_cases, colour = Country)) + 
+    geom_point(alpha = 0.7, shape = 21, size = 2.5, stroke = 1.5) +
+    geom_line()
+  
+  ggplot(data = ebola_plot, 
+         mapping = aes(x = Date, y = Cum_conf_cases, colour = Country)) + 
+    geom_line(mapping = aes(group = Country, colour = Country), 
+  alpha = 0.7, linetype = "solid", linewidth = 3.5)
+ 
+   
+  
+  
+  ggplot(data = ebola_plot, 
+         mapping = aes(x = Date, y = Cum_conf_cases, colour = Country)) + 
+    geom_point(alpha = 0.7, shape = 21, size = 5.5, stroke = 0.5) +
+    geom_line()+
+    ggtitle(label = "Confirmed Ebola cases in 3 countries") +
+    xlab(label = "Time") +
+    ylab(label = "Cum. # of confirmed cases")
+                      
+
+```
+
+
